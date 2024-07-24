@@ -1,0 +1,22 @@
+<h1>Chat with PDF</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="query" placeholder="Ask a question">
+    <button type="submit">Ask</button>
+</form>
+<div id="response"></div>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = new FormData(this).get('query');
+        fetch('', {
+            method: 'POST',
+            body: new URLSearchParams({ 'query': query }),
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('response').textContent = data.answer;
+        });
+    });
+</script>
